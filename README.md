@@ -1,3 +1,116 @@
 # restApiCsharp
 # Work in progress 
 # /people and /tea 
+
+/* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/
+BEGIN TRANSACTION
+SET QUOTED_IDENTIFIER ON
+SET ARITHABORT ON
+SET NUMERIC_ROUNDABORT OFF
+SET CONCAT_NULL_YIELDS_NULL ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+COMMIT
+BEGIN TRANSACTION
+GO
+CREATE TABLE dbo.tbTea
+	(
+	TeaName nvarchar(30) NOT NULL,
+	TeaCost money NOT NULL,
+	TeaSupplier int NOT NULL,
+	TeaEoL date NULL,
+	TeaLive bit NOT NULL,
+	TeaID int NOT NULL
+	)  ON [PRIMARY]
+GO
+ALTER TABLE dbo.Table_1 ADD CONSTRAINT
+	DF_Table_1_TeaLive DEFAULT 1 FOR TeaLive
+GO
+ALTER TABLE dbo.Table_1 ADD CONSTRAINT
+	PK_Table_1 PRIMARY KEY CLUSTERED 
+	(
+	TeaID
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+GO
+ALTER TABLE dbo.Table_1 SET (LOCK_ESCALATION = TABLE)
+GO
+COMMIT
+
+/* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/
+BEGIN TRANSACTION
+SET QUOTED_IDENTIFIER ON
+SET ARITHABORT ON
+SET NUMERIC_ROUNDABORT OFF
+SET CONCAT_NULL_YIELDS_NULL ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+COMMIT
+BEGIN TRANSACTION
+GO
+CREATE TABLE dbo.tbCustomer
+	(
+	customerName nvarchar(50) NOT NULL,
+	customerJoin date NULL,
+	customerAlive bit NOT NULL,
+	customerID int NOT NULL IDENTITY (1, 1)
+	)  ON [PRIMARY]
+GO
+ALTER TABLE dbo.Table_1 ADD CONSTRAINT
+	DF_Table_1_customerAlive DEFAULT 1 FOR customerAlive
+GO
+ALTER TABLE dbo.Table_1 ADD CONSTRAINT
+	PK_Table_1 PRIMARY KEY CLUSTERED 
+	(
+	customerID
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+GO
+ALTER TABLE dbo.Table_1 SET (LOCK_ESCALATION = TABLE)
+GO
+COMMIT
+
+/* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/
+BEGIN TRANSACTION
+SET QUOTED_IDENTIFIER ON
+SET ARITHABORT ON
+SET NUMERIC_ROUNDABORT OFF
+SET CONCAT_NULL_YIELDS_NULL ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+COMMIT
+BEGIN TRANSACTION
+GO
+CREATE TABLE dbo.Table_1
+	(
+	customerID int NOT NULL,
+	teaID int NOT NULL,
+	orderID int NOT NULL IDENTITY (1, 1),
+	linkedOrder int NULL,
+	liked bit NULL
+	)  ON [PRIMARY]
+GO
+ALTER TABLE dbo.tbOrder ADD CONSTRAINT
+	PK_Table_1 PRIMARY KEY CLUSTERED 
+	(
+	orderID
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+GO
+ALTER TABLE dbo.Table_1 ADD CONSTRAINT
+	FK_Table_1_Table_1 FOREIGN KEY
+	(
+	orderID
+	) REFERENCES dbo.Table_1
+	(
+	orderID
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+GO
+ALTER TABLE dbo.Table_1 SET (LOCK_ESCALATION = TABLE)
+GO
+COMMIT
